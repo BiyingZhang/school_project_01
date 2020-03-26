@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Battleship Game</title>
+        <script type="text/javascript" src="battleship.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <style>
+            td {
+                height: 20px;
+                width: 20px;
+                background: white;
+                text-align: center;
+                background-color: #ABDFF8;
+                border: 1px solid grey;
+            }
+            body {
+                background-color: #FFFCF0;
+            }
+            .board {
+                align-items: center;
+                width: 100%;
+                font-family:Arial;
+            }
+            .center {
+                position: absolute;
+                left: calc(50% - 100px);
+            }
+            .ship {
+              background-color: #7BCEF6;
+            }
+            .hitShip {
+                background-color: red;
+            }
+            .missedShip {
+                background-color: white;
+            }
+            .topBoard {
+                height: 350px;
+                top: 35px;
+                position: absolute;
+                text-align: center;
+                margin: auto;
+                left: calc(50% - 150px);
+            }
+            .bottomBoard {
+                height: 350px;
+                top: 380px;
+                position: absolute;
+                text-align: center;
+                margin: auto;
+                left: calc(50% - 150px);
+            }
+            .unclickable {
+                pointer-events: none;
+                cursor: default;
+            }
+            #welcome {
+                margin: 20px 50px;
+                text-align: center;
+                font-family:Arial;
+            }
+            #playerInfoSubmitButton {
+                background-color:#EE1E9C;
+                color: white;
+                padding: 10px 15px;
+                text-align: center;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+            #switchPlayerButton {
+                background-color:#FF5733;
+                color: white;
+                padding: 10px 15px;
+                text-align: center;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+            #switchPlayerButton:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+            #newGameButton {
+                background-color:#6847EE;
+                color: white;
+                padding: 10px 15px;
+                text-align: center;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+            #startGameButton {
+                background-color:#6847EE;
+                color: white;
+                padding: 10px 15px;
+                text-align: center;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+            #playerNames {
+                font-size: 20px;
+            }
+            input {
+                height:25px;
+                font-size: 16px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div id="welcome">
+            <h1 style="font-family:Arial">Welcome to the Battleship Game</h1>
+            <h3 id="playerNumberTitle" style="font-size:20px">Player One</h3>
+            <p>Please enter your name:</p>
+            <input id="playerName" type="text" style="width: 100px;"> </input>
+            <p>Please enter your ship placement:</p>
+            <input id="playerPlacement" type="text" style="width: 250px;"> </input>
+            <br/><br/><br/>
+            <button id="playerInfoSubmitButton" onclick="submit()">submit</button>
+            <p id="playerNames"></p>
+            <br/>
+            <button id="startGameButton" onclick="startGame()" style="display: none; margin-bottom: 10px;">Start Game</button>
+
+            <div id="scores" style="align: center; width: 100%">
+                <table id="scoresTable" class="center"  style="margin-top: 5px">Top Scores
+                    <tr>
+                        <td style="background-color: #F6B220; width: 100px">Name</td>
+                        <td style="background-color: #F6B220; width: 100px">Score</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <h4 id="gameStatus" style="margin:8px"></h4>
+        <div class="board">
+            <div id="boardOne" style="display: none">
+                <p style="margin:10px">Board One</p>
+                <table>
+                    <tr> <td style="background-color: #FFFCF0; border: none;"></td>
+                        <td style="background-color: #FFFCF0; border: none;">A</td>  <td style="background-color: #FFFCF0; border: none;">B</td>  <td style="background-color: #FFFCF0; border: none;">C</td>  <td style="background-color: #FFFCF0; border: none;">D</td>  <td style="background-color: #FFFCF0; border: none;">E</td>
+                        <td style="background-color: #FFFCF0; border: none;">F</td>  <td style="background-color: #FFFCF0; border: none;">G</td>  <td style="background-color: #FFFCF0; border: none;">H</td>  <td style="background-color: #FFFCF0; border: none;">I</td>  <td style="background-color: #FFFCF0; border: none;">J</td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">1</td>
+                      <td id="oneA1" onclick="hit('oneA1')"></td>   <td id="oneB1" onclick="hit('oneB1')"></td>   <td id="oneC1" onclick="hit('oneC1')"></td>   <td id="oneD1" onclick="hit('oneD1')"></td>   <td id="oneE1" onclick="hit('oneE1')"></td>
+                      <td id="oneF1" onclick="hit('oneF1')"></td>   <td id="oneG1" onclick="hit('oneG1')"></td>   <td id="oneH1" onclick="hit('oneH1')"></td>   <td id="oneI1" onclick="hit('oneI1')"></td>   <td id="oneJ1" onclick="hit('oneJ1')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">2</td>
+                        <td id="oneA2" onclick="hit('oneA2')"></td>   <td id="oneB2" onclick="hit('oneB2')"></td>   <td id="oneC2" onclick="hit('oneC2')"></td>   <td id="oneD2" onclick="hit('oneD2')"></td>   <td id="oneE2" onclick="hit('oneE2')"></td>
+                        <td id="oneF2" onclick="hit('oneF2')"></td>   <td id="oneG2" onclick="hit('oneG2')"></td>   <td id="oneH2" onclick="hit('oneH2')"></td>   <td id="oneI2" onclick="hit('oneI2')"></td>   <td id="oneJ2" onclick="hit('oneJ2')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">3</td>
+                        <td id="oneA3" onclick="hit('oneA3')"></td>   <td id="oneB3" onclick="hit('oneB3')"></td>   <td id="oneC3" onclick="hit('oneC3')"></td>   <td id="oneD3" onclick="hit('oneD3')"></td>   <td id="oneE3" onclick="hit('oneE3')"></td>
+                        <td id="oneF3" onclick="hit('oneF3')"></td>   <td id="oneG3" onclick="hit('oneG3')"></td>   <td id="oneH3" onclick="hit('oneH3')"></td>   <td id="oneI3" onclick="hit('oneI3')"></td>   <td id="oneJ3" onclick="hit('oneJ3')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">4</td>
+                        <td id="oneA4" onclick="hit('oneA4')"></td>   <td id="oneB4" onclick="hit('oneB4')"></td>   <td id="oneC4" onclick="hit('oneC4')"></td>   <td id="oneD4" onclick="hit('oneD4')"></td>   <td id="oneE4" onclick="hit('oneE4')"></td>
+                        <td id="oneF4" onclick="hit('oneF4')"></td>   <td id="oneG4" onclick="hit('oneG4')"></td>   <td id="oneH4" onclick="hit('oneH4')"></td>   <td id="oneI4" onclick="hit('oneI4')"></td>   <td id="oneJ4" onclick="hit('oneJ4')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">5</td>
+                        <td id="oneA5" onclick="hit('oneA5')"></td>   <td id="oneB5" onclick="hit('oneB5')"></td>   <td id="oneC5" onclick="hit('oneC5')"></td>   <td id="oneD5" onclick="hit('oneD5')"></td>   <td id="oneE5" onclick="hit('oneE5')"></td>
+                        <td id="oneF5" onclick="hit('oneF5')"></td>   <td id="oneG5" onclick="hit('oneG5')"></td>   <td id="oneH5" onclick="hit('oneH5')"></td>   <td id="oneI5" onclick="hit('oneI5')"></td>   <td id="oneJ5" onclick="hit('oneJ5')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">6</td>
+                        <td id="oneA6" onclick="hit('oneA6')"></td>   <td id="oneB6" onclick="hit('oneB6')"></td>   <td id="oneC6" onclick="hit('oneC6')"></td>   <td id="oneD6" onclick="hit('oneD6')"></td>   <td id="oneE6" onclick="hit('oneE6')"></td>
+                        <td id="oneF6" onclick="hit('oneF6')"></td>   <td id="oneG6" onclick="hit('oneG6')"></td>   <td id="oneH6" onclick="hit('oneH6')"></td>   <td id="oneI6" onclick="hit('oneI6')"></td>   <td id="oneJ6" onclick="hit('oneJ6')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">7</td>
+                        <td id="oneA7" onclick="hit('oneA7')"></td>   <td id="oneB7" onclick="hit('oneB7')"></td>   <td id="oneC7" onclick="hit('oneC7')"></td>   <td id="oneD7" onclick="hit('oneD7')"></td>   <td id="oneE7" onclick="hit('oneE7')"></td>
+                        <td id="oneF7" onclick="hit('oneF7')"></td>   <td id="oneG7" onclick="hit('oneG7')"></td>   <td id="oneH7" onclick="hit('oneH7')"></td>   <td id="oneI7" onclick="hit('oneI7')"></td>   <td id="oneJ7" onclick="hit('oneJ7')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">8</td>
+                        <td id="oneA8" onclick="hit('oneA8')"></td>   <td id="oneB8" onclick="hit('oneB8')"></td>   <td id="oneC8" onclick="hit('oneC8')"></td>   <td id="oneD8" onclick="hit('oneD8')"></td>   <td id="oneE8" onclick="hit('oneE8')"></td>
+                        <td id="oneF8" onclick="hit('oneF8')"></td>   <td id="oneG8" onclick="hit('oneG8')"></td>   <td id="oneH8" onclick="hit('oneH8')"></td>   <td id="oneI8" onclick="hit('oneI8')"></td>   <td id="oneJ8" onclick="hit('oneJ8')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">9</td>
+                        <td id="oneA9" onclick="hit('oneA9')"></td>   <td id="oneB9" onclick="hit('oneB9')"></td>   <td id="oneC9" onclick="hit('oneC9')"></td>   <td id="oneD9" onclick="hit('oneD9')"></td>   <td id="oneE9" onclick="hit('oneE9')"></td>
+                        <td id="oneF9" onclick="hit('oneF9')"></td>   <td id="oneG9" onclick="hit('oneG9')"></td>   <td id="oneH9" onclick="hit('oneH9')"></td>   <td id="oneI9" onclick="hit('oneI9')"></td>   <td id="oneJ9" onclick="hit('oneJ9')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">10</td>
+                        <td id="oneA10" onclick="hit('oneA10')"></td>   <td id="oneB10" onclick="hit('oneB10')"></td>   <td id="oneC10" onclick="hit('oneC10')"></td>   <td id="oneD10" onclick="hit('oneD10')"></td>   <td id="oneE10" onclick="hit('oneE10')"></td>
+                        <td id="oneF10" onclick="hit('oneF10')"></td>   <td id="oneG10" onclick="hit('oneG10')"></td>   <td id="oneH10" onclick="hit('oneH10')"></td>   <td id="oneI10" onclick="hit('oneI10')"></td>   <td id="oneJ10" onclick="hit('oneJ10')"></td>
+                    </tr>
+              </table>
+            </div>
+
+            <div id="boardTwo" style="display: none">
+                <p style="margin:10px">Board Two</p>
+                <table>
+                    <tr> <td style="background-color: #FFFCF0; border: none;"></td>
+                        <td style="background-color: #FFFCF0; border: none;">A</td>  <td style="background-color: #FFFCF0; border: none;">B</td>  <td style="background-color: #FFFCF0; border: none;">C</td>  <td style="background-color: #FFFCF0; border: none;">D</td>  <td style="background-color: #FFFCF0; border: none;">E</td>
+                        <td style="background-color: #FFFCF0; border: none;">F</td>  <td style="background-color: #FFFCF0; border: none;">G</td>  <td style="background-color: #FFFCF0; border: none;">H</td>  <td style="background-color: #FFFCF0; border: none;">I</td>  <td style="background-color: #FFFCF0; border: none;">J</td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">1</td>
+                      <td id="twoA1" onclick="hit('twoA1')"></td>   <td id="twoB1" onclick="hit('twoB1')"></td>   <td id="twoC1" onclick="hit('twoC1')"></td>   <td id="twoD1" onclick="hit('twoD1')"></td>   <td id="twoE1" onclick="hit('twoE1')"></td>
+                      <td id="twoF1" onclick="hit('twoF1')"></td>   <td id="twoG1" onclick="hit('twoG1')"></td>   <td id="twoH1" onclick="hit('twoH1')"></td>   <td id="twoI1" onclick="hit('twoI1')"></td>   <td id="twoJ1" onclick="hit('twoJ1')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">2</td>
+                        <td id="twoA2" onclick="hit('twoA2')"></td>   <td id="twoB2" onclick="hit('twoB2')"></td>   <td id="twoC2" onclick="hit('twoC2')"></td>   <td id="twoD2" onclick="hit('twoD2')"></td>   <td id="twoE2" onclick="hit('twoE2')"></td>
+                        <td id="twoF2" onclick="hit('twoF2')"></td>   <td id="twoG2" onclick="hit('twoG2')"></td>   <td id="twoH2" onclick="hit('twoH2')"></td>   <td id="twoI2" onclick="hit('twoI2')"></td>   <td id="twoJ2" onclick="hit('twoJ2')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">3</td>
+                        <td id="twoA3" onclick="hit('twoA3')"></td>   <td id="twoB3" onclick="hit('twoB3')"></td>   <td id="twoC3" onclick="hit('twoC3')"></td>   <td id="twoD3" onclick="hit('twoD3')"></td>   <td id="twoE3" onclick="hit('twoE3')"></td>
+                        <td id="twoF3" onclick="hit('twoF3')"></td>   <td id="twoG3" onclick="hit('twoG3')"></td>   <td id="twoH3" onclick="hit('twoH3')"></td>   <td id="twoI3" onclick="hit('twoI3')"></td>   <td id="twoJ3" onclick="hit('twoJ3')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">4</td>
+                        <td id="twoA4" onclick="hit('twoA4')"></td>   <td id="twoB4" onclick="hit('twoB4')"></td>   <td id="twoC4" onclick="hit('twoC4')"></td>   <td id="twoD4" onclick="hit('twoD4')"></td>   <td id="twoE4" onclick="hit('twoE4')"></td>
+                        <td id="twoF4" onclick="hit('twoF4')"></td>   <td id="twoG4" onclick="hit('twoG4')"></td>   <td id="twoH4" onclick="hit('twoH4')"></td>   <td id="twoI4" onclick="hit('twoI4')"></td>   <td id="twoJ4" onclick="hit('twoJ4')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">5</td>
+                        <td id="twoA5" onclick="hit('twoA5')"></td>   <td id="twoB5" onclick="hit('twoB5')"></td>   <td id="twoC5" onclick="hit('twoC5')"></td>   <td id="twoD5" onclick="hit('twoD5')"></td>   <td id="twoE5" onclick="hit('twoE5')"></td>
+                        <td id="twoF5" onclick="hit('twoF5')"></td>   <td id="twoG5" onclick="hit('twoG5')"></td>   <td id="twoH5" onclick="hit('twoH5')"></td>   <td id="twoI5" onclick="hit('twoI5')"></td>   <td id="twoJ5" onclick="hit('twoJ5')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">6</td>
+                        <td id="twoA6" onclick="hit('twoA6')"></td>   <td id="twoB6" onclick="hit('twoB6')"></td>   <td id="twoC6" onclick="hit('twoC6')"></td>   <td id="twoD6" onclick="hit('twoD6')"></td>   <td id="twoE6" onclick="hit('twoE6')"></td>
+                        <td id="twoF6" onclick="hit('twoF6')"></td>   <td id="twoG6" onclick="hit('twoG6')"></td>   <td id="twoH6" onclick="hit('twoH6')"></td>   <td id="twoI6" onclick="hit('twoI6')"></td>   <td id="twoJ6" onclick="hit('twoJ6')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">7</td>
+                        <td id="twoA7" onclick="hit('twoA7')"></td>   <td id="twoB7" onclick="hit('twoB7')"></td>   <td id="twoC7" onclick="hit('twoC7')"></td>   <td id="twoD7" onclick="hit('twoD7')"></td>   <td id="twoE7" onclick="hit('twoE7')"></td>
+                        <td id="twoF7" onclick="hit('twoF7')"></td>   <td id="twoG7" onclick="hit('twoG7')"></td>   <td id="twoH7" onclick="hit('twoH7')"></td>   <td id="twoI7" onclick="hit('twoI7')"></td>   <td id="twoJ7" onclick="hit('twoJ7')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">8</td>
+                        <td id="twoA8" onclick="hit('twoA8')"></td>   <td id="twoB8" onclick="hit('twoB8')"></td>   <td id="twoC8" onclick="hit('twoC8')"></td>   <td id="twoD8" onclick="hit('twoD8')"></td>   <td id="twoE8" onclick="hit('twoE8')"></td>
+                        <td id="twoF8" onclick="hit('twoF8')"></td>   <td id="twoG8" onclick="hit('twoG8')"></td>   <td id="twoH8" onclick="hit('twoH8')"></td>   <td id="twoI8" onclick="hit('twoI8')"></td>   <td id="twoJ8" onclick="hit('twoJ8')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">9</td>
+                        <td id="twoA9" onclick="hit('twoA9')"></td>   <td id="twoB9" onclick="hit('twoB9')"></td>   <td id="twoC9" onclick="hit('twoC9')"></td>   <td id="twoD9" onclick="hit('twoD9')"></td>   <td id="twoE9" onclick="hit('twoE9')"></td>
+                        <td id="twoF9" onclick="hit('twoF9')"></td>   <td id="twoG9" onclick="hit('twoG9')"></td>   <td id="twoH9" onclick="hit('twoH9')"></td>   <td id="twoI9" onclick="hit('twoI9')"></td>   <td id="twoJ9" onclick="hit('twoJ9')"></td>
+                    </tr>
+
+                    <tr> <td style="background-color: #FFFCF0; border: none;">10</td>
+                        <td id="twoA10" onclick="hit('twoA10')"></td>   <td id="twoB10" onclick="hit('twoB10')"></td>   <td id="twoC10" onclick="hit('twoC10')"></td>   <td id="twoD10" onclick="hit('twoD10')"></td>   <td id="twoE10" onclick="hit('twoE10')"></td>
+                        <td id="twoF10" onclick="hit('twoF10')"></td>   <td id="twoG10" onclick="hit('twoG10')"></td>   <td id="twoH10" onclick="hit('twoH10')"></td>   <td id="twoI10" onclick="hit('twoI10')"></td>   <td id="twoJ10" onclick="hit('twoJ10')"></td>
+                    </tr>
+                </table>
+            </div>
+            <div style="position: relative; width: 100vw; height: 100px; top: 700px">
+                <div id="report" style="text-align: center"></div>
+                <button id="switchPlayerButton" disabled=true style="position:relative;top: 0; left: 80%; display: none" onclick="switchPlayer()">Switch Player</button>
+                <button id="newGameButton" style="position: relative; margin: auto; bottom: 0; display: none" onclick="startNewGame()">Start New Game</button>
+            </div>
+        </div>
+    </body>
+</html>

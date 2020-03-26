@@ -1,0 +1,59 @@
+========================================
+CS/COE 1520 Assignment Information Sheet
+----------------------------------------
+
+You must submit an information sheet with every assignment. Also be sure
+to submit all materials following the procedures described on the
+submission procedures page.
+
+Name: Biying Zhang	
+
+Lecture section: Tue & Thur 6pm
+
+Recitation day and time:  Thursday night 7:30pm
+
+Assignment #:  1
+
+Program due date:  September 29th
+
+Handed in date:  September 28h
+
+Source code file name(s):
+battleship.html
+battleship.js
+
+
+
+
+
+
+Other file name(s) (if relevant):
+
+
+
+
+
+
+
+Does your project run without error?: yes
+
+If not, what is/are the error(s) and which parts of your program run
+correctly?:
+
+
+
+
+
+
+
+Additional comments to the grader:
+
+Players in the same session can't have the same name.
+To switch player, hit switch plater button.
+To start new game, hit start new game button. 
+Must be connected to internet because it uses remote jQuery source. 
+One player can only have one score stored in the localStorage (if there's a higher score with the same name as what is in localStorage, that in localStorage will be overWritten by the new high score)
+
+
+
+
